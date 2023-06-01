@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 112.7 38.4" xml:space="preserve"
+   fill="currentColor"
+   >
+<g>
+	<path d="M33.6,38.4l6-38.4h-12l-6,38.4H33.6z"/>
+	<path d="M21.6,38.4L12,0H0l9.6,38.4H21.6z"/>
+	<path d="M57.5,38.4L51.6,0h-12l6,38.4H57.5z"/>
+	<path fill="#E56A54" d="M69.5,38.4L79.1,0h-12l-9.6,38.4H69.5z"/>
+</g>
+<g>
+	<path d="M96.2,38.4H85.1V0h11.1V38.4z"/>
+	<polygon fill="#9678D3" points="96.2,10.8 102.2,0 112.7,0 112.7,10.8 	"/>
+</g>
+</svg>
