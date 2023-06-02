@@ -1,51 +1,43 @@
 "use client";
 
-import { use, useEffect, useRef, useState } from "react";
-
 import { Slider } from "./ui/slider";
+import usePlayerGlobal from "@/hooks/usePlayerGlobal";
+import { useEffect, useRef, useState } from "react";
 
-interface lineTimeProps {
-  audioplayer: any;
-  onNext: Function;
-}
-
-export default function LineTime({ audioplayer, onNext }: lineTimeProps) {
-  const [progress, setProgress] = useState(0);
+export default function LineTime() {
+  const { changeTime, getTime } = usePlayerGlobal();
+  const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(10000);
   const progressBarRef = useRef();
 
-  useEffect(() => {
-    progressBarRef.current = setInterval(() => {
-      if (audioplayer?.ended) {
-        onNext();
-      } else {
-        setProgress(audioplayer?.currentTime);
-      }
-    }, [1000]);
-    return () => {
-      audioplayer?.pause();
-      clearInterval(progressBarRef.current);
-    };
-  }, []);
+  // useEffect(() => {
+  //   progressBarRef.current = setInterval(() => {
+  //     const { current, total } = getTime();
+  //     console.log({ current, total });
+  //     setProgress(current);
+  //     setDuration(total);
+  //   }, [1000]);
+  //   return () => {
+  //     clearInterval(progressBarRef.current);
+  //   };
+  // }, []);
 
-  const handleOnChange = (value) => {
-    console.log(value);
-    audioplayer.currentTime = value;
-    setProgress(audioplayer.currentTime);
+  const moveLineTime = (value: [number]) => {
+    const newTime = changeTime(value[0]);
+    setProgress(newTime);
   };
-
-  console.log(audioplayer);
 
   return (
     <div className="flex w-full gap-2">
-      <span>5:05</span>
+      <span>{progress}</span>
       <Slider
         value={[progress] ?? [0]}
-        max={100}
+        max={duration}
         step={1}
-        onValueChange={handleOnChange}
+        onValueChange={moveLineTime}
         className="w-[90%]"
       />
-      <span>6:43</span>
+      <span>{duration}</span>
     </div>
   );
 }

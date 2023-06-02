@@ -2,25 +2,20 @@
 
 import { HtmlHTMLAttributes } from "react";
 import { Podcast } from "@/data/podcast";
-import { playState, queueState } from "@/global/playerState";
 import {
   ExternalLink,
-  ListMusic,
   MoreHorizontal,
   Play,
   PlusCircle,
   Share2,
 } from "lucide-react";
-import { useSetRecoilState } from "recoil";
 
+import usePlayerGlobal from "@/hooks/usePlayerGlobal";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -31,18 +26,7 @@ interface PodcastOptionsProps extends HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
-  const addPodcastToQueue = useSetRecoilState(queueState);
-  const updatePlay = useSetRecoilState(playState);
-
-  const handlePlayNew = () => {
-    addPodcastToQueue([podcast]);
-    updatePlay(true);
-  };
-
-  const handleAddQueue = () => {
-    addPodcastToQueue((prev) => [...prev, podcast]);
-    updatePlay(true);
-  };
+  const { loadPodcast, addToQueue } = usePlayerGlobal();
 
   return (
     <DropdownMenu>
@@ -52,11 +36,11 @@ export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
-        <DropdownMenuItem onClick={handlePlayNew}>
+        <DropdownMenuItem onClick={() => loadPodcast(podcast)}>
           <Play className="mr-2 h-4 w-4" />
           Reproducir
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleAddQueue}>
+        <DropdownMenuItem onClick={() => addToQueue(podcast)}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Añadir a la cola
         </DropdownMenuItem>

@@ -13,9 +13,10 @@ import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
 
 export default function AudioPlayer() {
-  const [play, setPlay] = useRecoilState(playState);
   const [urls, setUrls] = useRecoilState(queueState);
   const [actualIndex, setActualIndex] = useRecoilState(podcastSelectedState);
+
+  const [play, setPlay] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const podcast = urls?.[actualIndex];
@@ -33,21 +34,11 @@ export default function AudioPlayer() {
         ? new Audio(podcast?.audio_file)
         : undefined;
     if (audioRef.current) {
+      audioRef.current.play();
+      audioRef.current.currentTime = 0;
       setPlay(true);
     }
   }, [actualIndex]);
-
-  useEffect(() => {
-    console.log(play);
-    if (play) {
-      if (!audioRef.current) {
-        audioRef.current = new Audio(podcast?.audio_file);
-      }
-      audioRef.current?.play();
-    } else {
-      audioRef.current?.pause();
-    }
-  }, [play]);
 
   useEffect(() => {
     progressBarRef.current = setInterval(() => {
@@ -77,13 +68,24 @@ export default function AudioPlayer() {
     setActualIndex((prev) => prev - 1);
   };
 
-  const tooglePlay = () => setPlay((prev) => !prev);
+  const tooglePlay = () => {
+    if (audioRef.current?.paused) {
+      if (!audioRef.current) {
+        audioRef.current = new Audio(podcast?.audio_file);
+      }
+      audioRef.current?.play();
+      setPlay(true);
+    } else {
+      audioRef.current?.pause();
+      setPlay(false);
+    }
+  };
 
   const moveLineTime = (value: [number]) => {
     console.log(value[0]);
     audioRef.current.currentTime = value[0];
+    setProgress(audioRef.current?.currentTime);
     console.log(audioRef.current);
-    // setProgress(audioRef.current?.currentTime);
   };
 
   console.log(audioRef.current);
@@ -106,7 +108,7 @@ export default function AudioPlayer() {
         </Button>
       </div>
       <div className="flex w-full gap-2">
-        <span>5:05</span>
+        <span>{progress}</span>
         <Slider
           value={[progress] ?? [0]}
           max={100}
@@ -114,7 +116,7 @@ export default function AudioPlayer() {
           onValueChange={moveLineTime}
           className="w-[90%]"
         />
-        <span>6:43</span>
+        <span>{audioRef.current?.duration}</span>
       </div>
     </div>
   );
