@@ -1,16 +1,6 @@
 "use client";
 
-import { HtmlHTMLAttributes } from "react";
-import { Podcast } from "@/data/podcast";
-import {
-  ExternalLink,
-  MoreHorizontal,
-  Play,
-  PlusCircle,
-  Share2,
-} from "lucide-react";
-
-import usePlayerGlobal from "@/hooks/usePlayerGlobal";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +8,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { Button } from "./ui/button";
+import { Podcast } from "@/data/podcast";
+import usePlayerGlobal from "@/hooks/usePlayerGlobal";
+import {
+  ExternalLink,
+  ListPlus,
+  MoreHorizontal,
+  Play,
+  PlusCircle,
+  Share2,
+} from "lucide-react";
+import { HtmlHTMLAttributes } from "react";
 
 interface PodcastOptionsProps extends HtmlHTMLAttributes<HTMLDivElement> {
   podcast: Podcast;
@@ -41,7 +40,7 @@ export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
           Reproducir
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => addToQueue(podcast)}>
-          <PlusCircle className="mr-2 h-4 w-4" />
+          <ListPlus className="mr-2 h-4 w-4" />
           Añadir a la cola
         </DropdownMenuItem>
         {/* <DropdownMenuSub>

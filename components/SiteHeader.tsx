@@ -1,10 +1,9 @@
-import Link from "next/link"
-
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-import { Icons } from "@/components/Icons"
-import { MainNav } from "@/components/MainNav"
-import { ThemeToggle } from "@/components/ThemeToggle"
+import { Icons } from "@/components/Icons";
+import { MainNav } from "@/components/MainNav";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { buttonVariants } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
+import Link from "next/link";
 
 export function SiteHeader() {
   return (
@@ -45,8 +44,9 @@ export function SiteHeader() {
             </Link>
             <ThemeToggle />
           </nav>
+          {/* <Nav /> */}
         </div>
       </div>
     </header>
-  )
+  );
 }

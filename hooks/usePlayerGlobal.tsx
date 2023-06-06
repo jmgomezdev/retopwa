@@ -37,6 +37,7 @@ export default function usePlayerGlobal() {
           audio.play();
         };
         audio.addEventListener("ended", nextElQueue);
+        audio.addEventListener("timeupdate", updateProgress);
         setPlay(true);
       }
     }
@@ -80,19 +81,14 @@ export default function usePlayerGlobal() {
     setQueue((prev) => [...prev, podcast]);
   };
 
-  const changeTime = (value: number): number => {
+  const changeTime = (value: number) => {
     if (!audio) return 0;
     const newTime = value > audio?.duration ? audio?.duration : value;
     audio.currentTime = newTime;
-    return newTime;
   };
 
-  const getTime = (): { current: number; total: number } => {
-    console.log(audio);
-    return {
-      current: audio?.currentTime ?? 0,
-      total: audio?.duration ?? 0,
-    };
+  const updateProgress = () => {
+    setProgress(audio?.currentTime ?? 0);
   };
 
   return {
@@ -101,10 +97,12 @@ export default function usePlayerGlobal() {
     play,
     queue,
     actualIndex,
+    progress,
+    duration: audio?.duration ?? 0,
     setActualIndex,
     addToQueue,
     changeTime,
-    getTime,
+    // getTime,
     loadPodcast,
     nextElQueue,
     prevElQueue,

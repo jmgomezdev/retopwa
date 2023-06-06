@@ -1,0 +1,34 @@
+.menu {
+  @apply relative order-1 mt-0 hidden w-full flex-col items-center justify-end gap-4 pb-4 pt-8 text-base sm:container sm:order-none sm:flex sm:flex-row sm:px-4 sm:py-5;
+
+  /*a {
+    @apply px-6 py-1 text-base uppercase;
+  }*/
+}
+.open {
+  display: flex;
+}
+
+.nav_mobile_btn {
+  @apply absolute right-0 top-0 z-50 mr-10 mt-8 block w-7 cursor-pointer select-none lg:hidden;
+  span {
+    @apply block h-1 w-full transform rounded-full bg-primary;
+  }
+}
+
+.close {
+  span:first-child {
+    transform: rotate(45deg);
+    top: 4px;
+    position: relative;
+  }
+
+  span:nth-child(2) {
+    transform: rotate(-45deg);
+    margin-top: 0px;
+  }
+
+  span:nth-child(3) {
+    opacity: 0;
+  }
+}
