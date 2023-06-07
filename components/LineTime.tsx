@@ -1,11 +1,9 @@
 "use client";
 
 import { Slider } from "./ui/slider";
-import usePlayerGlobal from "@/hooks/usePlayerGlobal";
-import { timeFormatter, timeShortFormatter } from "@/lib/format";
+import usePlayerTime from "@/hooks/usePlayerTime";
+import { timeFormatter } from "@/lib/format";
 import { isNumeric } from "@/lib/utils";
-import { parse } from "path";
-import { useEffect, useRef, useState } from "react";
 
 const convertTime = (value: number): string => {
   if (!isNumeric(value)) return "00:00:00";
@@ -17,22 +15,10 @@ const convertTime = (value: number): string => {
 };
 
 export default function LineTime() {
-  const { changeTime, duration, progress } = usePlayerGlobal();
+  const { changeTime, duration, progress } = usePlayerTime();
 
   const durationTime = convertTime(duration);
   const progressTime = convertTime(progress);
-
-  // useEffect(() => {
-  //   progressBarRef.current = setInterval(() => {
-  //     const { current, total } = getTime();
-  //     console.log({ current, total });
-  //     setProgress(current);
-  //     setDuration(total);
-  //   }, [1000]);
-  //   return () => {
-  //     clearInterval(progressBarRef.current);
-  //   };
-  // }, []);
 
   const moveLineTime = (value: [number]) => {
     changeTime(value[0]);

@@ -35,39 +35,43 @@ export default function PlayList() {
       {/* <SheetContent position="right" size="sm"> */}
       <SheetContent position="bottom" size="content">
         <SheetHeader>
-          <SheetTitle>PlayList</SheetTitle>
+          <SheetTitle>Cola de reproducción</SheetTitle>
         </SheetHeader>
         <ul>
-          {queue.map((podcast, index) => (
-            <li
-              key={index}
-              value={index.toString()}
-              className={cn(
-                "flex justify-between w-full",
-                actualIndex === index && "selected"
-              )}
-            >
-              <div className="flex gap-4">
-                <span>{podcast.title}</span>
-                <span>
-                  {podcast?.isoDate
-                    ? dateFormatter.format(new Date(podcast.isoDate))
-                    : "Desconocido"}
-                </span>
-              </div>
-              <div className="flex gap-1">
-                <Button variant="ghost" onClick={() => setActualIndex(index)}>
-                  <Play className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  // onClick={() => tooglePlay()}
-                >
-                  <ListX className="h-4 w-4" />
-                </Button>
-              </div>
-            </li>
-          ))}
+          {queue?.length > 0 ? (
+            queue.map((podcast, index) => (
+              <li
+                key={index}
+                value={index.toString()}
+                className={cn(
+                  "flex justify-between w-full",
+                  actualIndex === index && "selected"
+                )}
+              >
+                <div className="flex gap-4">
+                  <span>{podcast.title}</span>
+                  <span>
+                    {podcast?.isoDate
+                      ? dateFormatter.format(new Date(podcast.isoDate))
+                      : "Desconocido"}
+                  </span>
+                </div>
+                <div className="flex gap-1">
+                  <Button variant="ghost" onClick={() => setActualIndex(index)}>
+                    <Play className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    // onClick={() => tooglePlay()}
+                  >
+                    <ListX className="h-4 w-4" />
+                  </Button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <li>No hay podcasts en la cola</li>
+          )}
         </ul>
       </SheetContent>
     </Sheet>

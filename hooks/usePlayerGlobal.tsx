@@ -9,7 +9,7 @@ import {
   queueState,
   progressState,
 } from "@/global/playerState";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 let isInit = false;
@@ -19,9 +19,11 @@ export default function usePlayerGlobal() {
   const [play, setPlay] = useRecoilState(playState);
   const [audio, setAudio] = useRecoilState(audioPlayerState);
   const [actualIndex, setActualIndex] = useRecoilState(actualIndexState);
-  const [progress, setProgress] = useRecoilState(progressState);
+  const setProgress = useSetRecoilState(progressState);
   const actual = useRecoilValue(ActualState);
   const isReady = audio && actual?.audio_file;
+
+  // console.log("render usePlayerGlobal");
 
   useEffect(() => {
     if (!audio || !isInit) {
@@ -44,10 +46,11 @@ export default function usePlayerGlobal() {
 
     return () => {
       audio?.removeEventListener("ended", nextElQueue);
+      audio?.removeEventListener("timeupdate", updateProgress);
     };
-  }, [audio, setAudio, actual]);
+  }, [audio, setAudio, actual, setPlay]);
 
-  const tooglePlay = () => {
+  const tooglePlay = useCallback(() => {
     if (audio?.paused) {
       audio?.play();
       setPlay(true);
@@ -55,37 +58,43 @@ export default function usePlayerGlobal() {
       audio?.pause();
       setPlay(false);
     }
-  };
+  }, [audio, setPlay]);
 
-  const nextElQueue = () => {
+  const nextElQueue = useCallback(() => {
     if (actualIndex >= queue.length - 1) {
       setActualIndex(0);
     }
     setActualIndex((prev) => prev + 1);
-  };
+  }, [actualIndex, queue.length, setActualIndex]);
 
-  const prevElQueue = () => {
+  const prevElQueue = useCallback(() => {
     if (actualIndex === 0) {
       setActualIndex(actualIndex);
     }
     setActualIndex((prev) => prev - 1);
-  };
+  }, [actualIndex, setActualIndex]);
 
-  const loadPodcast = (podcast: Podcast) => {
-    console.log(podcast);
-    setQueue([podcast]);
-    setActualIndex(0);
-  };
+  const loadPodcast = useCallback(
+    (podcast: Podcast) => {
+      console.log(podcast);
+      setQueue([podcast]);
+      setActualIndex(0);
+    },
+    [setQueue, setActualIndex]
+  );
 
-  const addToQueue = (podcast: Podcast) => {
-    setQueue((prev) => [...prev, podcast]);
-  };
+  const addToQueue = useCallback(
+    (podcast: Podcast) => {
+      setQueue((prev) => [...prev, podcast]);
+    },
+    [setQueue]
+  );
 
-  const changeTime = (value: number) => {
-    if (!audio) return 0;
-    const newTime = value > audio?.duration ? audio?.duration : value;
-    audio.currentTime = newTime;
-  };
+  // const changeTime = (value: number) => {
+  //   if (!audio) return 0;
+  //   const newTime = value > audio?.duration ? audio?.duration : value;
+  //   audio.currentTime = newTime;
+  // };
 
   const updateProgress = () => {
     setProgress(audio?.currentTime ?? 0);
@@ -97,11 +106,11 @@ export default function usePlayerGlobal() {
     play,
     queue,
     actualIndex,
-    progress,
+    // progress,
     duration: audio?.duration ?? 0,
     setActualIndex,
     addToQueue,
-    changeTime,
+    // changeTime,
     // getTime,
     loadPodcast,
     nextElQueue,

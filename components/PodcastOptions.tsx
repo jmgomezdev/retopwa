@@ -9,13 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Podcast } from "@/data/podcast";
-import usePlayerGlobal from "@/hooks/usePlayerGlobal";
+import usePlayerAdd from "@/hooks/usePlayerAdd";
 import {
   ExternalLink,
   ListPlus,
   MoreHorizontal,
   Play,
-  PlusCircle,
   Share2,
 } from "lucide-react";
 import { HtmlHTMLAttributes } from "react";
@@ -25,7 +24,9 @@ interface PodcastOptionsProps extends HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
-  const { loadPodcast, addToQueue } = usePlayerGlobal();
+  const { loadPodcast, addToQueue } = usePlayerAdd(podcast);
+
+  console.log("render PodcastOptions");
 
   return (
     <DropdownMenu>
@@ -35,11 +36,11 @@ export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
-        <DropdownMenuItem onClick={() => loadPodcast(podcast)}>
+        <DropdownMenuItem onClick={loadPodcast}>
           <Play className="mr-2 h-4 w-4" />
           Reproducir
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => addToQueue(podcast)}>
+        <DropdownMenuItem onClick={addToQueue}>
           <ListPlus className="mr-2 h-4 w-4" />
           Añadir a la cola
         </DropdownMenuItem>
