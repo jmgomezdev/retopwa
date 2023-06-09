@@ -21,9 +21,6 @@ export default function IndexPage() {
               key={podcast.title}
               podcast={podcast}
               className="w-[250px]"
-              aspectRatio="square"
-              width={250}
-              height={330}
             />
           ))}
         </div>

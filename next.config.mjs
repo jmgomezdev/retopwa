@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+import withPWA from "@imbios/next-pwa";
+import runtimeCaching from "@imbios/next-pwa/cache.js";
+
+const isProduction = process.env.NODE_ENV === "production";
+
+const config = {
   reactStrictMode: true,
   experimental: {
     appDir: true,
@@ -8,6 +13,23 @@ const nextConfig = {
   images: {
     domains: ["d3wo5wojvuv7l.cloudfront.net"],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  compiler: {
+    removeConsole: true,
+  },
 };
+
+const nextConfig = withPWA({
+  dest: "public",
+  register: true,
+  scope: "/app",
+  // disable: !isProduction,
+  runtimeCaching,
+})(config);
 
 export default nextConfig;

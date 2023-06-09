@@ -1,15 +1,14 @@
-import "@/styles/globals.css"
-import { ReactNode } from "react"
-import { Metadata } from "next"
-
-import { siteConfig } from "@/config/site"
-import { fontSans } from "@/lib/fonts"
-import { cn } from "@/lib/utils"
-import RecoilRootWrapper from "@/components/RecoilRootWrapper"
-import SiteFooter from "@/components/SiteFooter"
-import { SiteHeader } from "@/components/SiteHeader"
-import { TailwindIndicator } from "@/components/TailwindIndicator"
-import { ThemeProvider } from "@/components/ThemeProvider"
+import "@/styles/globals.css";
+import RecoilRootWrapper from "@/components/RecoilRootWrapper";
+import SiteFooter from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { TailwindIndicator } from "@/components/TailwindIndicator";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { siteConfig } from "@/config/site";
+import { fontSans } from "@/lib/fonts";
+import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -21,15 +20,22 @@ export const metadata: Metadata = {
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+  viewport:
+    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover",
+  manifest: "/manifest.json",
+  applicationName: siteConfig.name,
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: "default",
   },
-}
+  formatDetection: {
+    telephone: false,
+  },
+};
 
 interface RootLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -55,5 +61,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </body>
       </html>
     </>
-  )
+  );
 }
