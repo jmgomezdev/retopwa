@@ -26,10 +26,10 @@ const config = {
 
 const nextConfig = withPWA({
   dest: "public",
-  register: true,
-  scope: "/app",
-  // disable: !isProduction,
+  // scope: "/app",
+  disable: !isProduction,
   runtimeCaching,
+  buildExcludes: ["app-build-manifest.json"],
 })(config);
 
 export default nextConfig;

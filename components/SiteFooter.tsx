@@ -1,6 +1,7 @@
 import Controls from "./Controls";
 import LineTime from "./LineTime";
 import PlayList from "./PlayList";
+import PlayRate from "./PlayRate";
 import PodcastInfo from "./PodcastInfo";
 
 export default function SiteFooter() {
@@ -12,7 +13,10 @@ export default function SiteFooter() {
           <Controls />
           <LineTime />
         </div>
-        <PlayList />
+        <div className="flex gap-4">
+          <PlayRate />
+          <PlayList />
+        </div>
       </div>
     </footer>
   );

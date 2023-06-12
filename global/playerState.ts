@@ -11,13 +11,12 @@ export const progressState = atom<number>({
   default: 0,
 });
 
-
 export const audioPlayerState = atom<HTMLAudioElement | null>({
   key: "audioPlayerState",
   default: null,
 });
 
-export const queueState = atom<[Podcast] | []>({
+export const queueState = atom<Podcast[] | []>({
   key: "queueState",
   default: [],
 });

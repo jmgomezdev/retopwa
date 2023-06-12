@@ -32,6 +32,7 @@ export default function usePlayerGlobal() {
       isInit = !!audio;
     } else {
       if (actual?.audio_file && actual?.audio_file !== audio?.src) {
+        addToCache(actual?.audio_file);
         console.log("cambio");
         audio.pause();
         audio.src = actual?.audio_file;
@@ -40,6 +41,7 @@ export default function usePlayerGlobal() {
         };
         audio.addEventListener("ended", nextElQueue);
         audio.addEventListener("timeupdate", updateProgress);
+        // audio.addEventListener("loadeddata", addToCache);
         setPlay(true);
       }
     }
@@ -49,6 +51,15 @@ export default function usePlayerGlobal() {
       audio?.removeEventListener("timeupdate", updateProgress);
     };
   }, [audio, setAudio, actual, setPlay]);
+
+  useEffect(() => {
+    if (audio && queue.length === 0) {
+      audio.pause();
+      audio.src = "";
+      setPlay(false);
+      setProgress(0);
+    }
+  }, [queue, setPlay, audio]);
 
   const tooglePlay = useCallback(() => {
     if (audio?.paused) {
@@ -72,7 +83,8 @@ export default function usePlayerGlobal() {
       setActualIndex(actualIndex);
     }
     setActualIndex((prev) => prev - 1);
-  }, [actualIndex, setActualIndex]);
+    tooglePlay();
+  }, [actualIndex, setActualIndex, tooglePlay]);
 
   const loadPodcast = useCallback(
     (podcast: Podcast) => {
@@ -90,6 +102,19 @@ export default function usePlayerGlobal() {
     [setQueue]
   );
 
+  const changeRate = useCallback(() => {
+    if (audio) {
+      audio.playbackRate = audio.playbackRate === 1.0 ? 2.0 : 1.0;
+    }
+  }, [audio]);
+
+  const removeIndexQueue = useCallback(
+    (selected: number) => {
+      setQueue((prev) => prev.filter((_, index) => index !== selected));
+    },
+    [setQueue]
+  );
+
   // const changeTime = (value: number) => {
   //   if (!audio) return 0;
   //   const newTime = value > audio?.duration ? audio?.duration : value;
@@ -100,6 +125,13 @@ export default function usePlayerGlobal() {
     setProgress(audio?.currentTime ?? 0);
   };
 
+  const addToCache = async (url: string) => {
+    if ("caches" in window) {
+      const cache = await caches.open("podcast");
+      cache.add(url);
+    }
+  };
+
   return {
     actual,
     isReady,
@@ -108,13 +140,16 @@ export default function usePlayerGlobal() {
     actualIndex,
     // progress,
     duration: audio?.duration ?? 0,
+    rate: audio?.playbackRate === 1.0,
     setActualIndex,
     addToQueue,
     // changeTime,
+    changeRate,
     // getTime,
     loadPodcast,
     nextElQueue,
     prevElQueue,
+    removeIndexQueue,
     tooglePlay,
   };
 }

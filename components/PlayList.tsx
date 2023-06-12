@@ -11,10 +11,17 @@ import {
 import usePlayerGlobal from "@/hooks/usePlayerGlobal";
 import { dateFormatter } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { ListVideo, ListX, Play } from "lucide-react";
+import { ListVideo, ListX, Pause, Play } from "lucide-react";
 
 export default function PlayList() {
-  const { queue, actualIndex, setActualIndex } = usePlayerGlobal();
+  const {
+    queue,
+    actualIndex,
+    play,
+    setActualIndex,
+    removeIndexQueue,
+    tooglePlay,
+  } = usePlayerGlobal();
 
   return (
     // <Select
@@ -44,8 +51,8 @@ export default function PlayList() {
                 key={index}
                 value={index.toString()}
                 className={cn(
-                  "flex justify-between w-full",
-                  actualIndex === index && "selected"
+                  "flex w-full justify-between",
+                  actualIndex === index && "font-bold"
                 )}
               >
                 <div className="flex gap-4">
@@ -57,12 +64,25 @@ export default function PlayList() {
                   </span>
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" onClick={() => setActualIndex(index)}>
-                    <Play className="h-4 w-4" />
-                  </Button>
+                  {actualIndex === index ? (
+                    <Button variant="ghost" onClick={() => tooglePlay()}>
+                      {play ? (
+                        <Pause className="h-4 w-4" />
+                      ) : (
+                        <Play className="h-4 w-4" />
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      onClick={() => setActualIndex(index)}
+                    >
+                      <Play className="h-4 w-4" />
+                    </Button>
+                  )}
                   <Button
                     variant="ghost"
-                    // onClick={() => tooglePlay()}
+                    onClick={() => removeIndexQueue(index)}
                   >
                     <ListX className="h-4 w-4" />
                   </Button>
