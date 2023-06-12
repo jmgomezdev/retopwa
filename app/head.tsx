@@ -1,6 +1,11 @@
 export default function Head() {
   return (
     <>
+      <link rel="icon" href="/favicon.ico" />
+      <link rel="image_src" href="/logo.png" />
+      <meta property="og:image" content="/logo.png" />
+      <meta content="width=device-width, initial-scale=1" name="viewport" />
+      <meta name="author" content="José Manuel Gómez Pérez" />
       <link rel="manifest" href="/manifest.json" />
       <meta name="application-name" content="PWR" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
