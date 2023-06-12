@@ -7,7 +7,7 @@ export default function PodcastInfo() {
   const { actual } = usePlayerGlobal();
   console.log("rener info");
   return (
-    <span className="w-full max-w-xs">
+    <span className="w-full max-w-[50%] overflow-hidden text-ellipsis whitespace-nowrap sm:max-w-xs sm:whitespace-normal">
       {actual?.title ?? "Ningún podcast seleccionado"}
     </span>
     // <div className="flex w-full max-w-xs flex-col">

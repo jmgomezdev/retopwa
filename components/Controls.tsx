@@ -1,17 +1,15 @@
 "use client";
 
-import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
-
-import usePlayerGlobal from "@/hooks/usePlayerGlobal";
-
 import { Button } from "./ui/button";
+import usePlayerGlobal from "@/hooks/usePlayerGlobal";
+import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
 export default function Controls() {
   const { isReady, play, prevElQueue, tooglePlay, nextElQueue } =
     usePlayerGlobal();
 
   return (
-    <div className="flex gap-6">
+    <div className="hidden gap-6 sm:flex">
       <Button variant="ghost" onClick={() => prevElQueue()}>
         <SkipBack className="h-6 w-6" />
       </Button>

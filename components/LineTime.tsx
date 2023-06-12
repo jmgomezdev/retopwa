@@ -8,10 +8,7 @@ import { isNumeric } from "@/lib/utils";
 const convertTime = (value: number): string => {
   if (!isNumeric(value)) return "00:00:00";
   const time = new Date(Math.floor(value) * 1000);
-  const timeWithoutTimezone = new Date(
-    time.getTime() + time.getTimezoneOffset() * 60000
-  );
-  return timeFormatter.format(timeWithoutTimezone);
+  return timeFormatter.format(time);
 };
 
 export default function LineTime() {

@@ -6,10 +6,10 @@ export const dateFormatter = new Intl.DateTimeFormat("es-ES", {
 
 export const timeShortFormatter = new Intl.DateTimeFormat("es-ES", {
   timeStyle: "short",
-  timeZone: "Europe/Madrid",
+  timeZone: "GMT",
 });
 
 export const timeFormatter = new Intl.DateTimeFormat("es-ES", {
   timeStyle: "medium",
-  timeZone: "Europe/Madrid",
+  timeZone: "GMT",
 });

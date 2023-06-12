@@ -51,11 +51,11 @@ export default function PlayList() {
                 key={index}
                 value={index.toString()}
                 className={cn(
-                  "flex w-full justify-between",
+                  "flex w-full items-center justify-between",
                   actualIndex === index && "font-bold"
                 )}
               >
-                <div className="flex gap-4">
+                <div className="flex items-center gap-4">
                   <span>{podcast.title}</span>
                   <span>
                     {podcast?.isoDate
@@ -63,7 +63,7 @@ export default function PlayList() {
                       : "Desconocido"}
                   </span>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex items-center  gap-1">
                   {actualIndex === index ? (
                     <Button variant="ghost" onClick={() => tooglePlay()}>
                       {play ? (
