@@ -1,12 +1,13 @@
-import data from "./podcast.json"
+import data from "./podcast.json";
 
 export interface Podcast {
-  audio_file: string
-  image_url: string
-  isoDate: string
-  number: string
-  slug: string
-  title: string
+  audio_file: string;
+  image_url: string;
+  isoDate: string;
+  link: string;
+  number: string;
+  slug: string;
+  title: string;
 }
 
-export const podcasts: Podcast[] = data
+export const podcasts: Podcast[] = data;

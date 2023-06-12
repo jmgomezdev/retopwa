@@ -26,7 +26,19 @@ interface PodcastOptionsProps extends HtmlHTMLAttributes<HTMLDivElement> {
 export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
   const { loadPodcast, addToQueue } = usePlayerAdd(podcast);
 
-  console.log("render PodcastOptions");
+  const handleShare = async () => {
+    if ("canShare" in navigator) {
+      try {
+        await navigator.share({
+          title: `WR ${podcast.number}`,
+          text: podcast.title,
+          url: podcast.link,
+        });
+      } catch (error) {
+        console.log("Navegador no soporta share");
+      }
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -62,9 +74,16 @@ export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <ExternalLink className="mr-2 h-4 w-4" />
-          Ir a la web
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label=">Ir a la web"
+            href={podcast.link}
+          >
+            Ir a la web
+          </a>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleShare}>
           <Share2 className="mr-2 h-4 w-4" />
           Compartir
         </DropdownMenuItem>
