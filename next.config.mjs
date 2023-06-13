@@ -20,14 +20,13 @@ const config = {
     ignoreBuildErrors: true,
   },
   compiler: {
-    removeConsole: isProduction,
+    // removeConsole: isProduction,
   },
 };
 
 const nextConfig = withPWA({
   dest: "public",
-  // scope: "/app",
-  disable: !isProduction,
+  // disable: !isProduction,
   runtimeCaching,
   buildExcludes: ["app-build-manifest.json"],
 })(config);

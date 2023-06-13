@@ -15,6 +15,19 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 let isInit = false;
 
+const showNotification = (podcast: Podcast) => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.controller?.postMessage(podcast);
+  }
+};
+
+const addToCache = async (url: string) => {
+  if ("caches" in window) {
+    const cache = await caches.open("podcast");
+    cache.add(url);
+  }
+};
+
 export default function usePlayerGlobal() {
   const [queue, setQueue] = useRecoilState(queueState);
   const [play, setPlay] = useRecoilState(playState);
@@ -31,6 +44,19 @@ export default function usePlayerGlobal() {
     if (!audio || !isInit) {
       setAudio(typeof Audio !== "undefined" ? new Audio() : null);
       isInit = !!audio;
+      if (!("Notification" in window)) {
+        console.warn("Notifications not supported");
+        return;
+      }
+
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission().then((permission) => {
+          if (permission !== "granted") {
+            console.warn("Permission not granted for notifications");
+            return;
+          }
+        });
+      }
     } else {
       if (actual?.audio_file && actual?.audio_file !== audio?.src) {
         setLoading(true);
@@ -42,6 +68,7 @@ export default function usePlayerGlobal() {
           console.log("canplay");
           audio.play();
           setLoading(false);
+          showNotification(actual);
         };
         audio.addEventListener("ended", nextElQueue);
         audio.addEventListener("timeupdate", updateProgress);
@@ -129,13 +156,6 @@ export default function usePlayerGlobal() {
 
   const updateProgress = () => {
     setProgress(audio?.currentTime ?? 0);
-  };
-
-  const addToCache = async (url: string) => {
-    if ("caches" in window) {
-      const cache = await caches.open("podcast");
-      cache.add(url);
-    }
   };
 
   const playOn = () => setPlay(true);
