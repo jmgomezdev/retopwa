@@ -6,6 +6,11 @@ export const playState = atom<boolean>({
   default: false,
 });
 
+export const loadingState = atom<boolean>({
+  key: "loadingState",
+  default: false,
+});
+
 export const progressState = atom<number>({
   key: "progressState",
   default: 0,

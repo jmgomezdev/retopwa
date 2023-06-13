@@ -2,11 +2,15 @@
 
 import { Button } from "./ui/button";
 import usePlayerGlobal from "@/hooks/usePlayerGlobal";
-import { Pause, Play } from "lucide-react";
+import { Loader2, Pause, Play } from "lucide-react";
 
 export default function PlayMini() {
-  const { isReady, play, tooglePlay } = usePlayerGlobal();
-  return (
+  const { isReady, loading, play, tooglePlay } = usePlayerGlobal();
+  return loading ? (
+    <span className="flex items-center justify-center px-4 py-2">
+      <Loader2 className="h-6 w-6 animate-spin" />
+    </span>
+  ) : (
     <Button
       disabled={!isReady}
       className="sm:hidden"

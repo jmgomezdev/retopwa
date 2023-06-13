@@ -20,7 +20,7 @@ const config = {
     ignoreBuildErrors: true,
   },
   compiler: {
-    removeConsole: true,
+    removeConsole: isProduction,
   },
 };
 
