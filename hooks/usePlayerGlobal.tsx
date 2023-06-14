@@ -9,6 +9,7 @@ import {
   playState,
   progressState,
   queueState,
+  quickRateState,
 } from "@/global/playerState";
 import { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -26,6 +27,7 @@ export default function usePlayerGlobal() {
   const [queue, setQueue] = useRecoilState(queueState);
   const [play, setPlay] = useRecoilState(playState);
   const [loading, setLoading] = useRecoilState(loadingState);
+  const [rate, setRate] = useRecoilState(quickRateState);
   const [audio, setAudio] = useRecoilState(audioPlayerState);
   const [actualIndex, setActualIndex] = useRecoilState(actualIndexState);
   const setProgress = useSetRecoilState(progressState);
@@ -143,9 +145,11 @@ export default function usePlayerGlobal() {
 
   const changeRate = useCallback(() => {
     if (audio) {
-      audio.playbackRate = audio.playbackRate === 1.0 ? 2.0 : 1.0;
+      const newRate = audio.playbackRate === 1.0 ? 2.0 : 1.0;
+      audio.playbackRate = newRate;
+      setRate(newRate === 2.0);
     }
-  }, [audio]);
+  }, [audio, setRate]);
 
   const removeIndexQueue = useCallback(
     (selected: number) => {
@@ -169,7 +173,7 @@ export default function usePlayerGlobal() {
     actualIndex,
     duration: audio?.duration ?? 0,
     loading,
-    rate: audio?.playbackRate === 1.0,
+    rate,
     setActualIndex,
     addToQueue,
     changeRate,

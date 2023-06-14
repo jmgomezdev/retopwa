@@ -11,6 +11,11 @@ export const loadingState = atom<boolean>({
   default: false,
 });
 
+export const quickRateState = atom<boolean>({
+  key: "quickRateState",
+  default: false,
+});
+
 export const progressState = atom<number>({
   key: "progressState",
   default: 0,
