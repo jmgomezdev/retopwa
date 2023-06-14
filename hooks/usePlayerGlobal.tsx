@@ -15,12 +15,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 let isInit = false;
 
-const showNotification = (podcast: Podcast) => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.controller?.postMessage(podcast);
-  }
-};
-
 const addToCache = async (url: string) => {
   if ("caches" in window) {
     const cache = await caches.open("podcast");
@@ -44,19 +38,6 @@ export default function usePlayerGlobal() {
     if (!audio || !isInit) {
       setAudio(typeof Audio !== "undefined" ? new Audio() : null);
       isInit = !!audio;
-      if (!("Notification" in window)) {
-        console.warn("Notifications not supported");
-        return;
-      }
-
-      if (Notification.permission !== "granted") {
-        Notification.requestPermission().then((permission) => {
-          if (permission !== "granted") {
-            console.warn("Permission not granted for notifications");
-            return;
-          }
-        });
-      }
     } else {
       if (actual?.audio_file && actual?.audio_file !== audio?.src) {
         setLoading(true);
@@ -68,7 +49,32 @@ export default function usePlayerGlobal() {
           console.log("canplay");
           audio.play();
           setLoading(false);
-          showNotification(actual);
+          if ("mediaSession" in navigator) {
+            // Establecer los metadatos
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: actual.title,
+              artist: "Web Reactiva",
+              album: `Episodio ${actual.number}`,
+              artwork: [{ src: actual.image_url, type: "image/jpg" }],
+            });
+            navigator.mediaSession.setActionHandler("previoustrack", () =>
+              nextElQueue()
+            );
+            navigator.mediaSession.setActionHandler("nexttrack", () =>
+              prevElQueue()
+            );
+            navigator.mediaSession.setActionHandler(
+              "seekto",
+              function (details) {
+                if (details.fastSeek && "fastSeek" in audio) {
+                  audio.fastSeek(details.seekTime ?? 0);
+                  return;
+                }
+
+                audio.currentTime = details.seekTime ?? 0;
+              }
+            );
+          }
         };
         audio.addEventListener("ended", nextElQueue);
         audio.addEventListener("timeupdate", updateProgress);
@@ -148,12 +154,6 @@ export default function usePlayerGlobal() {
     [setQueue]
   );
 
-  // const changeTime = (value: number) => {
-  //   if (!audio) return 0;
-  //   const newTime = value > audio?.duration ? audio?.duration : value;
-  //   audio.currentTime = newTime;
-  // };
-
   const updateProgress = () => {
     setProgress(audio?.currentTime ?? 0);
   };
@@ -167,15 +167,12 @@ export default function usePlayerGlobal() {
     play,
     queue,
     actualIndex,
-    // progress,
     duration: audio?.duration ?? 0,
     loading,
     rate: audio?.playbackRate === 1.0,
     setActualIndex,
     addToQueue,
-    // changeTime,
     changeRate,
-    // getTime,
     loadPodcast,
     nextElQueue,
     prevElQueue,
