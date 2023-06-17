@@ -15,8 +15,11 @@ export default function usePlayerAdd(podcast: Podcast) {
   }, [setQueue, setActualIndex, podcast]);
 
   const addToQueue = useCallback(() => {
-    setQueue((prev) => [...prev, podcast]);
+    setQueue((prev) =>
+      prev.some((item) => item.guid === podcast.guid)
+        ? prev
+        : [...prev, podcast]
+    );
   }, [setQueue, podcast]);
-
   return { loadPodcast, addToQueue };
 }

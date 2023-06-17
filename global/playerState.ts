@@ -23,7 +23,7 @@ export const progressState = atom<number>({
 
 export const audioPlayerState = atom<HTMLAudioElement | null>({
   key: "audioPlayerState",
-  default: null,
+  default: typeof Audio !== "undefined" ? new Audio() : null,
 });
 
 export const queueState = atom<Podcast[] | []>({

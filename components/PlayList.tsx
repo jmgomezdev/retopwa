@@ -33,11 +33,9 @@ export default function PlayList() {
     //   }}
     // >
     <Sheet>
-      <SheetTrigger>
-        <Button variant="ghost" size="sm" className="w-9 p-0">
-          <ListVideo className="h-6 w-6" />
-          <span className="sr-only">Playlist</span>
-        </Button>
+      <SheetTrigger className="inline-flex h-10 items-center justify-center rounded-md bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <ListVideo className="h-6 w-6" />
+        <span className="sr-only">Playlist</span>
       </SheetTrigger>
       {/* <SheetContent position="right" size="sm"> */}
       <SheetContent position="bottom" size="content">

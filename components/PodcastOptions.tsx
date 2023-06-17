@@ -42,17 +42,17 @@ export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button variant="ghost">
           <MoreHorizontal className="h-6 w-6" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
-        <DropdownMenuItem onClick={loadPodcast}>
+        <DropdownMenuItem className="cursor-pointer" onClick={loadPodcast}>
           <Play className="mr-2 h-4 w-4" />
           Reproducir
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={addToQueue}>
+        <DropdownMenuItem className="cursor-pointer" onClick={addToQueue}>
           <ListPlus className="mr-2 h-4 w-4" />
           Añadir a la cola
         </DropdownMenuItem>
@@ -83,7 +83,7 @@ export default function PodcastOptions({ podcast }: PodcastOptionsProps) {
             Ir a la web
           </a>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleShare}>
+        <DropdownMenuItem className="cursor-pointer" onClick={handleShare}>
           <Share2 className="mr-2 h-4 w-4" />
           Compartir
         </DropdownMenuItem>

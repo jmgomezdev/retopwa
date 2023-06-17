@@ -6,7 +6,7 @@ import { timeFormatter } from "@/lib/format";
 import { isNumeric } from "@/lib/utils";
 
 const convertTime = (value: number): string => {
-  if (!isNumeric(value)) return "00:00:00";
+  if (!isNumeric(value)) return "0:00:00";
   const time = new Date(Math.floor(value) * 1000);
   return timeFormatter.format(time);
 };
@@ -23,15 +23,19 @@ export default function LineTime() {
 
   return (
     <div className="flex w-full gap-2">
-      <time dateTime={progressTime}>{progressTime}</time>
+      <time dateTime={progressTime} className="w-16 shrink-0">
+        {progressTime}
+      </time>
       <Slider
-        value={[Math.floor(progress)] ?? [0]}
-        max={Math.floor(duration) ?? 0}
+        value={[Math.floor(progress)] || [0]}
+        max={Math.floor(duration) || 0}
         step={1}
         onValueChange={moveLineTime}
-        className="w-[90%]"
+        className="grow"
       />
-      <time dateTime={durationTime}>{durationTime}</time>
+      <time dateTime={durationTime} className="w-16 shrink-0">
+        {durationTime}
+      </time>
     </div>
   );
 }
